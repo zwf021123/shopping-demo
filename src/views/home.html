@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    .container {
+      border: 1px solid black;
+      padding: 10px;
+    }
+
+    .container h1 {
+      text-align: center;
+    }
+
+    .container button {
+      float: right;
+      margin-left: 10px;
+    }
+
+    .spys {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      width: 1000px;
+      list-style: none;
+      padding: 0;
+    }
+
+    .spys.li {
+      width: 300px;
+      margin: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>商品展示页</h1>
+    <button onclick="location.href='addCommodity'">添加商品</button>
+    <button onclick="location.href='cart'">购物车</button>
+    <button onclick="location.href='login'">退出</button>
+
+    <ul class="spys">
+      <% commoditys.forEach(function(item) { %>
+
+        <li class="spys li">
+          <div>
+            <img width="80" height="100" src="<%= item.imgSrc%>" alt="">
+          </div>
+          <div>
+            <a>
+              <%= item.name %>
+            </a>
+            <strong style="color:red">￥<%= item.price %></strong>
+          </div>
+          <div>
+            <a href="/addToCart/<%=item._id%>" class="btn btn-success" style="width: 120px;">加入购物车</a>
+          </div>
+        </li>
+        <% }); %>
+    </ul>
+  </div>
+
+  <script>
+
+  </script>
+</body>
+
+</html>

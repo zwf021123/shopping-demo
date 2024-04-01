@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>购物车</title>
+  <style>
+    header,
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 10px;
+      background-color: #ddd;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+  </style>
+  <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+</head>
+
+<body>
+  <header>
+    <h1>购物车</h1>
+    <div>
+      <button onclick="location.href='commodity.html'">商品页</button>
+      <button onclick="location.href='login'">退出</button>
+    </div>
+  </header>
+  <table>
+    <thead>
+      <tr>
+        <th><input type="checkbox" id="checkAll"></th>
+        <th>商品名称</th>
+        <th>商品价格</th>
+        <th>数量</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% cart.forEach(function(item,index) { %>
+
+        <tr>
+          <td><input data-id="<%=item._id%>" type="checkbox" class="checkItem" name="chkItem"></td>
+          <td>
+            <%= item.cName %>
+          </td>
+          <td>
+            <span class="price">
+              <%= item.cPrice %>
+            </span>
+          </td>
+          <td><input data-id="<%=item._id%>" type="number" min="1" value="<%= item.cQuantity %>"></td>
+          <td><a href="/delFromCart/<%=item._id%>">删除</a></td>
+        </tr>
+        <% }); %>
+
+          <!-- 更多商品 -->
+    </tbody>
+  </table>
+  <footer>
+    <p>总价: <span id="totalPrice">0</span></p>
+    <button onclick="toCalculate()">结算</button>
+  </footer>
+
+  <script>
+    var checkItems = document.querySelectorAll('.checkItem');
+
+    document.getElementById('checkAll').addEventListener('change', function () {
+      var checkboxes = document.querySelectorAll('.checkItem');
+      for (var checkbox of checkboxes) {
+        checkbox.checked = this.checked;
+      }
+    });
+    for (var checkItem of checkItems) {
+      checkItem.addEventListener('change', function () {
+        checkAll.checked = Array.from(checkItems).every(x => x.checked);
+      });
+    }
+    let sum = 0;
+    function toCalculate() {
+      sum = 0;
+      var totalPrice = document.getElementById('totalPrice');
+      var quantitys = document.querySelectorAll('input[type="number"]');
+      var prices = document.querySelectorAll('.price');
+      for (var i = 0; i < quantitys.length; i++) {
+        sum += +quantitys[i].value * +prices[i].innerText;
+        // 获取每个商品的id和数量
+        const data = {
+          id: quantitys[i].dataset.id,
+          quantity: quantitys[i].value
+        };
+        $.ajax({
+          url: '/cart',
+          method: 'POST',
+          data: data,
+          success: function (res) {
+            console.log(res);
+          }
+        });
+      }
+      totalPrice.innerText = sum;
+      // 发送请求
+
+
+    }
+
+
+  </script>
+</body>
+
+</html>

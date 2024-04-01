@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>添加商品</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 300px;
+      gap: 10px;
+    }
+
+    input[type="button"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 15px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+  </style>
+  <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+</head>
+
+<body>
+  <form>
+    <label for="name">商品名称:</label><br>
+    <input type="text" id="name" name="name"><br>
+    <label for="price">商品价格:</label><br>
+    <input type="text" id="price" name="price"><br>
+    <input type="button" value="添加商品" onclick="addcommodity()">
+  </form>
+  <button onclick="location.href='home'">返回商品页</button>
+
+  <script>
+    function addcommodity() {
+      //imgSrc表示图片路径)，这里内置了5张图片，格式为：xmsz-X.jpg(X为1-5数字)。
+      var name = $('#name').val();
+      var price = $('#price').val();
+      var data = {
+        name,
+        price,
+        imgSrc: 'https://th.bing.com/th/id/R.4158b4d34f22b5c1d955a6ed589f173e?rik=k5Zx8Zng5tpuIw&riu=http%3a%2f%2fpic15.nipic.com%2f20110727%2f1369025_124246495000_2.jpg&ehk=yQPJSLX4MNJV6kEaQ3NBUPGN3Oj8pHCOsNkgPBXhCMs%3d&risl=&pid=ImgRaw&r=0'
+      }
+      $.ajax({
+        url: '/addcommodity',
+        type: 'POST',
+        data: data,
+        success: function (data, status) {
+          if (status == 'success') {
+            alert('添加成功！')
+          }
+        },
+        error: function (data, err) {
+          alert('添加失败！')
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>
